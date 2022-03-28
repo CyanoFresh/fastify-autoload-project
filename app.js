@@ -1,20 +1,19 @@
 import fastify from 'fastify';
-import autoload from 'fastify-autoload';
-import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
+import features from './features/index.js';
+import config from './config/index.js';
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-function build() {
+/**
+ * @returns {FastifyInstance}
+ */
+async function build() {
   const server = fastify({
     logger: {
       prettyPrint: true,
     },
   });
 
-  server.register(autoload, {
-    dir: join(__dirname, 'features'),
+  server.register(features, {
+    prefix: config.prefix,
   });
 
   return server;
